@@ -13,7 +13,7 @@ Want to get involved? Join our Slack channel and help out! (http://flutter-parse
 To install, either add to your pubspec.yaml
 ```yml
 dependencies:  
-    parse_server_sdk: ^1.0.25
+    parse_server_sdk: ^1.0.26
 ```
 or clone this repository and add to your project. As this is an early development with multiple contributors, it is probably best to download/clone and keep updating as an when a new feature is added.
 
@@ -55,6 +55,13 @@ You can create custom objects by calling:
 var dietPlan = ParseObject('DietPlan')
 	..set('Name', 'Ketogenic')
 	..set('Fat', 65);
+await dietPlan.save();
+```
+Or update existing object by its objectId by calling:
+```dart
+var dietPlan = ParseObject('DietPlan')
+	..objectId = 'R5EonpUDWy'
+	..set('Fat', 70);
 await dietPlan.save();
 ```
 Verify that the object has been successfully saved using

@@ -118,11 +118,10 @@ class ParseUser extends ParseObject implements ParseCloneable {
     try {
       final Uri url = getSanitisedUri(_client, '$keyEndPointUserName');
       final Response response = await _client.get(url, headers: headers);
-      return await _handleResponse(this, response,
-          ParseApiRQ.currentUser, _debug, this.parseClassName);
+      return await _handleResponse(
+          this, response, ParseApiRQ.currentUser, _debug, this.parseClassName);
     } on Exception catch (e) {
-      return handleException(
-          e, ParseApiRQ.currentUser, _debug, parseClassName);
+      return handleException(e, ParseApiRQ.currentUser, _debug, parseClassName);
     }
   }
 
@@ -174,10 +173,18 @@ class ParseUser extends ParseObject implements ParseCloneable {
   /// provided, call this method to login.
   Future<ParseResponse> login() async {
     try {
-      final Map<String, dynamic> queryParams = <String, String>{
-        keyVarUsername: username,
-        keyVarPassword: password
-      };
+      Map<String, dynamic> queryParams;
+      if (username == null || username.isEmpty) {
+        queryParams = <String, String>{
+          keyVarEmail: emailAddress,
+          keyVarPassword: password
+        };
+      } else {
+        queryParams = <String, String>{
+          keyVarUsername: username,
+          keyVarPassword: password
+        };
+      }
 
       final Uri url = getSanitisedUri(_client, '$keyEndPointLogin',
           queryParams: queryParams);
